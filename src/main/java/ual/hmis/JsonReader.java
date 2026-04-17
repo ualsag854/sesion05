@@ -1,26 +1,33 @@
 package ual.hmis;
 
-import java.io.FileReader;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-public class JsonReader {
+public final class JsonReader {
 
-	public static Coche[] leerCochesJSON (String archivo) {
+    /** Constructor. */
+    /* package */ JsonReader() {
+        throw new IllegalStateException("Utility class");
+    }
+
+	public static Coche[] leerCochesJSON (final String archivo) {
 
 		Coche[] coches = null;
-        Gson gson = new Gson();
-        JsonParser parser = new JsonParser();
+        final Gson gson = new Gson();
+        final JsonParser parser = new JsonParser();
 
-        try (FileReader reader = new FileReader(archivo)) {
+        try (InputStreamReader reader = new InputStreamReader(new FileInputStream(archivo), StandardCharsets.UTF_8)) {
             // Parsear el archivo JSON en un objeto de la clase JsonObject
-            JsonObject jsonObject = parser.parse(reader).getAsJsonObject();
+            final JsonObject jsonObject = parser.parse(reader).getAsJsonObject();
 
             // Obtener el arreglo de objetos "coches"
-            JsonArray cochesJson = jsonObject.getAsJsonArray("coches");
+            final JsonArray cochesJson = jsonObject.getAsJsonArray("coches");
 
             // Crear un arreglo de la clase Coche y llenarlo con los objetos del archivo JSON
             coches = gson.fromJson(cochesJson, Coche[].class);

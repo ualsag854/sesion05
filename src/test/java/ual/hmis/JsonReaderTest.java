@@ -7,6 +7,13 @@ import org.junit.jupiter.api.Test;
 class JsonReaderTest {
 
 	@Test
+	void testConstructorEsPrivado() {
+		assertThrows(IllegalStateException.class, () -> {
+			new JsonReader();
+		});
+	}
+
+	@Test
 	void testLeerCochesJSON() {
 		String ruta = "src/main/java/ual/hmis/coches.json";
 		Coche [] coches = JsonReader.leerCochesJSON(ruta);
@@ -21,6 +28,13 @@ class JsonReaderTest {
 		assertEquals(primero, coches[0]);
 		assertTrue (primero.equals(coches[0]));
 		assertTrue (coches[0].equals(primero));
+	}
+
+	@Test
+	void testLeerCochesJSONExcepcion() {
+		String ruta = "src/main/java/ual/hmis/archivo_falso.json";
+		Coche [] coches = JsonReader.leerCochesJSON(ruta);
+		assertNull(coches);
 	}
 
 
